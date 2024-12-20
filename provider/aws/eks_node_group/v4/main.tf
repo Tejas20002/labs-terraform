@@ -113,13 +113,23 @@ data "aws_autoscaling_group" "example" {
 }
 
 resource "aws_autoscaling_group_tag" "main" {
-  count = var.aws_autoscaling_group_tag_create ? 1 : 0
-
   depends_on = [aws_eks_node_group.main]
 
-  # Access the auto-scaling group name from the resources
-  autoscaling_group_name = flatten([for res in aws_eks_node_group.main.resources : res.autoscaling_groups])[0].name
+  for_each = toset(
+    [for asg in flatten(
+      [for resources in aws_eks_node_group.example.resources : resources.autoscaling_groups]
+    ) : asg.name]
+  )
 
-  tag var.aws_autoscaling_group_tag
+  autoscaling_group_name = each.value
+
+  dynamic "tag" {
+    for_each = var.tags
+    content {
+      key   = tag.key
+      value = tag.value
+      propagate_at_launch = true
+    }
+  }
 
 }
