@@ -120,6 +120,13 @@ resource "aws_autoscaling_group_tag" "main" {
   # Access the auto-scaling group name from the resources
   autoscaling_group_name = flatten([for res in aws_eks_node_group.main.resources : res.autoscaling_groups])[0].name
 
-  # Tag details
-  tag = var.aws_autoscaling_group_tag
+  dynamic "tag" {
+    for_each = var.aws_autoscaling_group_tag
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
+  }
+
 }
