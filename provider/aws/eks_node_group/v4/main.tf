@@ -109,7 +109,7 @@ resource "aws_eks_addon" "aws_guardduty_agent" {
 }
 
 data "aws_autoscaling_group" "example" {
-  name = aws_eks_node_group.main.autoscaling_group_names[0]
+  name = aws_eks_node_group.main.node_group_name
 }
 
 resource "aws_autoscaling_group_tag" "main" {
@@ -123,9 +123,7 @@ resource "aws_autoscaling_group_tag" "main" {
   dynamic "tag" {
     for_each = var.aws_autoscaling_group_tag
     content {
-      key                 = tag.key
-      value               = tag.value
-      propagate_at_launch = true
+      tag.key               = tag.value
     }
   }
 
