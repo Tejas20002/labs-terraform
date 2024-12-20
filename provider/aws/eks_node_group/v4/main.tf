@@ -117,7 +117,7 @@ resource "aws_autoscaling_group_tag" "main" {
 
   for_each = toset(
     [for asg in flatten(
-      [for resources in aws_eks_node_group.example.resources : resources.autoscaling_groups]
+      [for resources in aws_eks_node_group.main.resources : resources.autoscaling_groups]
     ) : asg.name]
   )
 
