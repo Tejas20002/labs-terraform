@@ -120,6 +120,6 @@ resource "aws_autoscaling_group_tag" "main" {
   # Access the auto-scaling group name from the resources
   autoscaling_group_name = flatten([for res in aws_eks_node_group.main.resources : res.autoscaling_groups])[0].name
 
-  tag = var.aws_autoscaling_group_tag
+  tag var.aws_autoscaling_group_tag
 
 }
