@@ -26,10 +26,10 @@ output "eks_node_group_autoscaling_group_id" {
 }
 
 # Assuming the resources block contains autoscaling_groups, update based on structure.
-output "eks_node_group_autoscaling_group_name" {
-  value = flatten([for res in aws_eks_node_group.main.resources : res.autoscaling_groups])[0].name
-  description = "The name of the Auto Scaling Group in the EKS node group."
-}
+#output "eks_node_group_autoscaling_group_name" {
+#  value = flatten([for res in aws_eks_node_group.main.resources : res.autoscaling_groups])[0].name
+#  description = "The name of the Auto Scaling Group in the EKS node group."
+#}
 
 output "eks_node_group_status" {
   value = aws_eks_node_group.main.status
