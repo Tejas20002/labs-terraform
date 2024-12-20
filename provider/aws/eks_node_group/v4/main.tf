@@ -108,6 +108,10 @@ resource "aws_eks_addon" "aws_guardduty_agent" {
   addon_version               = var.addon_aws_guardduty_agent_version
 }
 
+data "aws_autoscaling_group" "example" {
+  name = aws_eks_node_group.main.node_group_name
+}
+
 resource "aws_autoscaling_group_tag" "main" {
   count = var.aws_autoscaling_group_tag_create ? 1 : 0
 
